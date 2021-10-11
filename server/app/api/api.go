@@ -30,7 +30,7 @@ func Before() (db *gorm.DB) {
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+
 	return db
 }
 
@@ -63,12 +63,17 @@ func Start() {
 		})
 	})
 	// select
-	r.GET("/id/:id/", func(c *gin.Context) {
-		idString := c.Param("id")
+	r.GET("/id", func(c *gin.Context) {
+
+		idString := c.Query("id")
+
 		id, _ := strconv.Atoi(idString)
-		getUser(id)
+		user := getUser(id)
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"id":     user.ID,
+			"name":   user.Name,
+			"gender": user.Gender,
+			"hobby":  user.Hobby,
 		})
 
 	})
@@ -77,6 +82,7 @@ func Start() {
 
 func addUser(id int, name string, gender string, hobby string) {
 	db := Before()
+	defer db.Close()
 	// 创建记录
 	u := UserInfo{ID: uint(id), Name: name, Gender: gender, Hobby: hobby}
 	db.Create(&u)
@@ -84,6 +90,7 @@ func addUser(id int, name string, gender string, hobby string) {
 
 func deleteUser(id int, name string, gender string, hobby string) {
 	db := Before()
+	defer db.Close()
 	// 删除
 	u := &UserInfo{
 		ID:     uint(id),
@@ -97,6 +104,7 @@ func deleteUser(id int, name string, gender string, hobby string) {
 
 func putUser(id int, name string, gender string, hobby string) {
 	db := Before()
+	defer db.Close()
 	// 更新
 	u := &UserInfo{
 		ID:     uint(id),
@@ -109,7 +117,7 @@ func putUser(id int, name string, gender string, hobby string) {
 
 func getUser(id int) *UserInfo {
 	db := Before()
-
+	defer db.Close()
 	// 查询
 	var u = new(UserInfo)
 	db.First(u)
