@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -69,6 +70,7 @@ func Start() {
 
 		id, _ := strconv.Atoi(idString)
 		user := getUser(id)
+		fmt.Println(user)
 		c.JSON(200, gin.H{
 			"id":     user.ID,
 			"name":   user.Name,
@@ -120,8 +122,6 @@ func getUser(id int) *UserInfo {
 	defer db.Close()
 	// 查询
 	var u = new(UserInfo)
-	db.First(u)
 	db.First(&u, id)
-	db.AutoMigrate(&UserInfo{})
-	return &UserInfo{}
+	return u
 }
