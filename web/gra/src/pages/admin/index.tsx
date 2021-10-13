@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
+import axios from 'axios'
+axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.timeout = 8080;
 class Admin extends Component <{
     navList ?: any
 },
@@ -20,8 +23,19 @@ class Admin extends Component <{
 
     render() {
 
-        const onFinish = (values: any) => {
-            console.log('Success:', values);
+        const onFinish = async (values: any) => {
+            let data = {
+                params:{
+                    id: '2',
+                    name: 'tony',
+                    gender: 'a'
+                }
+            }
+            axios.post('/auth', data).then(res => {
+                console.log(res)
+            }).catch(error => {
+                console.error(error)
+            })
         };
 
         const onFinishFailed = (errorInfo: any) => {
