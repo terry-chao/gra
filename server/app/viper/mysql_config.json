@@ -1,0 +1,8 @@
+{
+  "mysql": {
+    "username": "root",
+    "password": "root",
+    "address": "localhost",
+    "table_name": "gra"
+  }
+}

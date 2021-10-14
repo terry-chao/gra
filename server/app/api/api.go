@@ -5,6 +5,8 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"gra/auth"
+	"gra/viper"
+	_ "gra/viper"
 	"strconv"
 )
 
@@ -15,8 +17,23 @@ type UserInfo struct {
 	Hobby  string
 }
 
+var username string
+var password string
+var address string
+var tableName string
+
+var mysqlUrl = username + ":" + password + "@(" + address + ")/" + tableName + "?charset=utf8mb4&parseTime=True&loc=Local"
+
+func init() {
+	config := viper.GetMysqlConfig()
+	username = config.MysqlInfo.Username
+	password = config.MysqlInfo.Password
+	address = config.MysqlInfo.Address
+	tableName = config.MysqlInfo.Table_name
+}
+
 func DbInit() {
-	mysqlUrl := "root:root@(127.0.0.1)/gra?charset=utf8mb4&parseTime=True&loc=Local"
+	viper.GetMysqlConfig()
 	db, err := gorm.Open("mysql", mysqlUrl)
 	if err != nil {
 		panic(err)
@@ -26,7 +43,6 @@ func DbInit() {
 }
 
 func Before() (db *gorm.DB) {
-	mysqlUrl := "root:root@(127.0.0.1)/gra?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", mysqlUrl)
 	if err != nil {
 		panic(err)
