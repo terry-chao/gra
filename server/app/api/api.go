@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"gra/auth"
+	//"gra/auth"
 	"gra/viper"
 	_ "gra/viper"
 	"strconv"
@@ -93,7 +93,7 @@ func Start() {
 
 	})
 
-	r.POST("/auth", auth.AuthHandler)
+	//r.POST("/auth", auth.AuthHandler)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
