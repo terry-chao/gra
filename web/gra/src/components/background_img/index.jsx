@@ -5,7 +5,7 @@ class BackgroundImg extends Component {
   render() {
     return (
       <div>
-        <img src={Img}/>
+        <img src={Img} alt="logo"/>
       </div>
     )
   }
